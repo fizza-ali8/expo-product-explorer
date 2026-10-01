@@ -1,0 +1,36 @@
+name: Expo CI
+
+on:
+  push:
+    branches: [main, 'feature/**']
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    name: Check Expo project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify required project files
+        run: |
+          test -f App.js
+          test -f package.json
+          test -f .gitignore
+
+      - name: Check Expo package versions
+        run: npx expo install --check
+
+      - name: Validate JavaScript syntax
+        run: node --check App.js && node --check components/ProductCard.js
