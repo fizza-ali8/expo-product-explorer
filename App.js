@@ -20,6 +20,8 @@ const PRODUCTS = [
 const CATEGORIES = ['All', 'Audio', 'Wearables', 'Accessories', 'Desk'];
 
 export default function App() {
+  // intentional CI break
+  const broken = {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const visibleProducts = useMemo(() => {
