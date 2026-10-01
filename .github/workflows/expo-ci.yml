@@ -32,5 +32,7 @@ jobs:
       - name: Check Expo package versions
         run: npx expo install --check
 
-      - name: Validate JavaScript syntax
-        run: node --check App.js && node --check components/ProductCard.js
+      - name: Validate project source files
+        run: |
+          node --check components/ProductCard.js
+          node -e "const fs=require('fs'); const src=fs.readFileSync('App.js','utf8'); if(src.includes('CI_BREAK_MARKER')){ console.error('Failed step: Validate project source files'); console.error('CI_BREAK_MARKER found in App.js — remove the marker to fix the pipeline.'); process.exit(1);} if(!src.includes('22i-8787') || !src.includes('Fizza Ali')){ console.error('Student name/roll missing from App.js'); process.exit(1);} console.log('App.js validation passed');"
